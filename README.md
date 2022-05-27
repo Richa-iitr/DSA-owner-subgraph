@@ -17,7 +17,7 @@ Queries can be made for:
 
 **Query Results**:
 
-<!-- <pre>{ 
+<pre>{ 
   {
   users(where: {address: "0x1d29756e8f7b091ce6c11a35980de79c7eda5d1f"}) {
     id
@@ -33,7 +33,7 @@ Queries can be made for:
     }
   }
 }</pre>
-
+<!--
 
 _Result from InstaList contract:_
 
