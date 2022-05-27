@@ -1,47 +1,108 @@
-import { Address, BigInt, Bytes, log } from "@graphprotocol/graph-ts";
 import {
-  InstaDefaultImplementation,
+  Address,
+  BigInt,
+  Bytes,
+  dataSource,
+  log,
+} from "@graphprotocol/graph-ts";
+import {
+  InstaAccountModified,
   LogDisableUser,
-  LogEnableUser
-} from "../generated/InstaDefaultImplementation/InstaDefaultImplementation";
+  LogEnableUser,
+  LogDisable,
+  LogEnable,
+} from "../generated/templates/InstaAccountModified/InstaAccountModified";
 import { Dsa } from "../generated/schema";
+import { createOrLoadDsa, createOrLoadUser } from "./insta-index";
 
 export function handleLogEnableUser(event: LogEnableUser): void {
-  let id = event.transaction.from.toHexString();
-  log.info("transaction Hash: ", [event.transaction.hash.toHexString()]);
-  let dsa = Dsa.load(id);
-  if (dsa == null) {
-    dsa = new Dsa(id);
-    dsa.auths = [];
-    dsa.owner = event.params.user;
-    dsa.address = event.transaction.from;
-    dsa.version = BigInt.fromI32(0);
-    dsa.accountID = BigInt.fromI32(0);
-  }
-  let owners = dsa.auths;
-  owners.push(event.params.user);
-  dsa.auths = owners;
+  // event LogEnableUser(address indexed user); --> v2
+
+  let context = dataSource.context();
+  let dsaId = context.getString("dsa");
+
+  log.info("transaction hash: {} and from: {} ", [
+    event.transaction.hash.toHexString(),
+    event.transaction.from.toHexString(),
+  ]);
+  log.info("ID: {}", [dsaId]);
+
+  let dsa = createOrLoadDsa(dsaId);
+  let user = createOrLoadUser(event.params.user.toHexString());
+
+  dsa.owner = user.id;
+  dsa.isAuth = true;
+
   dsa.save();
 }
 
 export function handleLogDisableUser(event: LogDisableUser): void {
-  let id = event.transaction.from.toHexString();
+  // event LogDisableUser(address indexed user);  --> v2
+
+  let context = dataSource.context();
+  let id = context.getString("dsa");
+
+  log.info("transaction hash: {} and from: {} ", [
+    event.transaction.hash.toHexString(),
+    event.transaction.from.toHexString(),
+  ]);
+  log.info("ID: {}", [id]);
+
   let dsa = Dsa.load(id);
   if (dsa == null) {
-    // dsa = new Dsa(id);
-    // dsa.auths = [call.inputs._owner];
-    // dsa.owner = call.transaction.from;
-    // dsa.address = new Address(0);
-    // dsa.version = BigInt.fromI32(0);
-    // dsa.accountID = BigInt.fromI32(0);
     log.info("DSA-doesn't-exist: ", [id]);
     return;
   }
-  let owners = dsa.auths;
-  let removeIndex = owners.indexOf(event.params.user, 0);
-  if (removeIndex != -1) {
-    owners.splice(removeIndex, 1);
+  let user = createOrLoadUser(event.params.user.toHexString());
+
+  dsa.owner = user.id;
+  dsa.isAuth = false;
+
+  dsa.save();
+}
+
+export function handleEnableUser(event: LogEnable): void {
+  // event LogEnable(address indexed user); --> v1
+
+  let context = dataSource.context();
+  let dsaId = context.getString("dsa");
+
+  log.info("transaction hash: {} and from: {} ", [
+    event.transaction.hash.toHexString(),
+    event.transaction.from.toHexString(),
+  ]);
+  log.info("ID: {}", [dsaId]);
+
+  let dsa = createOrLoadDsa(dsaId);
+  let user = createOrLoadUser(event.params.user.toHexString());
+
+  dsa.owner = user.id;
+  dsa.isAuth = true;
+
+  dsa.save();
+}
+
+export function handleDisableUser(event: LogDisable): void {
+  // event LogDisable(address indexed user);  --> v1
+
+  let context = dataSource.context();
+  let id = context.getString("dsa");
+
+  log.info("transaction hash: {} and from: {} ", [
+    event.transaction.hash.toHexString(),
+    event.transaction.from.toHexString(),
+  ]);
+  log.info("ID: {}", [id]);
+
+  let dsa = Dsa.load(id);
+  if (dsa == null) {
+    log.info("DSA-doesn't-exist: ", [id]);
+    return;
   }
-  dsa.auths = owners;
+  let user = createOrLoadUser(event.params.user.toHexString());
+
+  dsa.owner = user.id;
+  dsa.isAuth = false;
+
   dsa.save();
 }

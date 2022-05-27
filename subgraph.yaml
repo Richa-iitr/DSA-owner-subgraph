@@ -14,6 +14,7 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
+        - User
         - Dsa
       abis:
         - name: InstaIndex
@@ -26,47 +27,29 @@ dataSources:
         - event: LogAccountCreated(address,indexed address,indexed address,indexed address)
           handler: handleLogAccountCreated
       file: ./src/insta-index.ts
-  - kind: ethereum
-    name: InstaList
+templates:
+  - kind: ethereum/contract
+    name: InstaAccountModified
     network: mainnet
     source:
-      address: "0x4c8a1BEb8a87765788946D6B19C6C6355194AbEb"
-      abi: InstaList
-      startBlock: 9000000
+      abi: InstaAccountModified
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
+        - User
         - Dsa
       abis:
-        - name: InstaList
-          file: ./abis/InstaList.json
-      callHandlers:
-        - function: addAuth(address)
-          handler: handleAddAuth
-        - function: removeAuth(address)
-          handler: handleRemoveAuth
-      file: ./src/insta-list.ts
-  # - kind: ethereum
-  #   name: InstaDefaultImplementation
-  #   network: mainnet
-  #   source:
-  #     address: "0xFE02a32Cbe0CB9ad9A945576A5bb53A3C123A3A3"
-  #     abi: InstaDefaultImplementation
-  #     startBlock: 9000000
-  #   mapping:
-  #     kind: ethereum/events
-  #     apiVersion: 0.0.5
-  #     language: wasm/assemblyscript
-  #     entities:
-  #       - Dsa
-  #     abis:
-  #       - name: InstaDefaultImplementation
-  #         file: ./abis/InstaDefaultImplementation.json
-  #     eventHandlers:
-  #       - event: LogEnableUser(indexed address)
-  #         handler: handleLogEnableUser
-  #       - event: LogDisableUser(indexed address)
-  #         handler: handleLogDisableUser
-  #     file: ./src/insta-account.ts
+        - name: InstaAccountModified
+          file: ./abis/InstaAccountModified.json
+      eventHandlers:
+        - event: LogEnableUser(indexed address)
+          handler: handleLogEnableUser
+        - event: LogDisableUser(indexed address)
+          handler: handleLogDisableUser
+        - event: LogEnable(indexed address)
+          handler: handleEnableUser
+        - event: LogDisable(indexed address)
+          handler: handleDisableUser
+      file: ./src/insta-account.ts

@@ -1,8 +1,18 @@
+type User @entity {
+  id: ID!
+  dsasOwned: [Dsa!]! @derivedFrom(field: "owner")
+}
+
 type Dsa @entity {
   id: ID!
   version: BigInt!
   accountID: BigInt!
-  address: Bytes! # address
-  owner: Bytes! # address
-  auths: [Bytes!]!
+  # Smart account address
+  address: Bytes!
+  # Dsa created by user address
+  creator: Bytes!
+  # Latest owner's address with authority to the dsa
+  owner: User!
+  # True if the latest owner is authorised
+  isAuth: Boolean!
 }
