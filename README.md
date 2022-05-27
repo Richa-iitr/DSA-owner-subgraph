@@ -1,8 +1,8 @@
 ## DSA Subgraph 
 # User Owned DSAs
 
-Query the subgraph (Mainet deployment): https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground<br>
-<!-- Pending Version: https://thegraph.com/hosted-service/subgraph/richa-iitr/dsa?version=pending -->
+Query the subgraph (Mainet deployment): <!--https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground--><br>
+Pending Version: https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?version=pending
 
 Queries can be made for: 
 - `address`: Address of the user, also the unique `id` identifying it.
@@ -17,7 +17,7 @@ Queries can be made for:
 
 **Query Results**:
 
-<pre>{ 
+<!-- <pre>{ 
   {
   users(where: {address: "0x1d29756e8f7b091ce6c11a35980de79c7eda5d1f"}) {
     id
@@ -56,3 +56,4 @@ _Result from InstaList contract:_
   }
 }</pre>
 
+ -->
