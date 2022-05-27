@@ -1,4 +1,4 @@
-import { DataSourceContext } from "@graphprotocol/graph-ts";
+import { BigInt, DataSourceContext } from "@graphprotocol/graph-ts";
 import {
   InstaIndex,
   LogAccountCreated,
@@ -29,6 +29,7 @@ export function handleLogAccountCreated(event: LogAccountCreated): void {
   dsa.accountID = accountId;
   dsa.owner = user.id;
   dsa.isAuth = true;
+  user.address = event.params.owner;
   dsa.save();
 }
 
@@ -36,6 +37,7 @@ export function createOrLoadUser(id: string): User {
   let user = User.load(id);
   if (user == null) {
     user = new User(id);
+    user.count = BigInt.fromI32(0);
   }
   return user;
 }

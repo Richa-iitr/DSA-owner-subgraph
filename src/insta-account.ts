@@ -30,10 +30,13 @@ export function handleLogEnableUser(event: LogEnableUser): void {
   let dsa = createOrLoadDsa(dsaId);
   let user = createOrLoadUser(event.params.user.toHexString());
 
+  user.address = event.params.user;
+  user.count = user.count.plus(BigInt.fromI32(1));
   dsa.owner = user.id;
   dsa.isAuth = true;
 
   dsa.save();
+  user.save();
 }
 
 export function handleLogDisableUser(event: LogDisableUser): void {
@@ -55,9 +58,12 @@ export function handleLogDisableUser(event: LogDisableUser): void {
   }
   let user = createOrLoadUser(event.params.user.toHexString());
 
+  user.address = event.params.user;
+  user.count = user.count.minus(BigInt.fromI32(1));
   dsa.owner = user.id;
   dsa.isAuth = false;
 
+  user.save();
   dsa.save();
 }
 
@@ -76,9 +82,12 @@ export function handleEnableUser(event: LogEnable): void {
   let dsa = createOrLoadDsa(dsaId);
   let user = createOrLoadUser(event.params.user.toHexString());
 
+  user.address = event.params.user;
+  user.count = user.count.plus(BigInt.fromI32(1));
   dsa.owner = user.id;
   dsa.isAuth = true;
 
+  user.save();
   dsa.save();
 }
 
@@ -101,8 +110,11 @@ export function handleDisableUser(event: LogDisable): void {
   }
   let user = createOrLoadUser(event.params.user.toHexString());
 
+  user.address = event.params.user;
+  user.count = user.count.minus(BigInt.fromI32(1));
   dsa.owner = user.id;
   dsa.isAuth = false;
 
+  user.save();
   dsa.save();
 }
