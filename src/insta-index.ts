@@ -6,7 +6,7 @@ import {
 import { InstaList } from "../generated/InstaList/InstaList";
 import { InstaAccount } from "../generated/InstaIndex/InstaAccount";
 import { InstaAccountModified } from "../generated/templates";
-import { Dsa, User } from "../generated/schema";
+import { DSA, User } from "../generated/schema";
 
 export function handleLogAccountCreated(event: LogAccountCreated): void {
   // event LogAccountCreated(address sender, address indexed owner, address indexed account, address indexed origin);
@@ -27,25 +27,27 @@ export function handleLogAccountCreated(event: LogAccountCreated): void {
   dsa.address = event.params.account;
   dsa.version = instaAccount.version();
   dsa.accountID = accountId;
-  dsa.owner = user.id;
-  dsa.isAuth = true;
+  let owners = dsa.owners;
+  owners.push(user.id);
+  dsa.owners = owners;
   user.address = event.params.owner;
   dsa.save();
+  user.save();
 }
 
 export function createOrLoadUser(id: string): User {
   let user = User.load(id);
   if (user == null) {
     user = new User(id);
-    user.count = BigInt.fromI32(0);
   }
   return user;
 }
 
-export function createOrLoadDsa(id: string): Dsa {
-  let dsa = Dsa.load(id);
+export function createOrLoadDsa(id: string): DSA {
+  let dsa = DSA.load(id);
   if (dsa == null) {
-    dsa = new Dsa(id);
+    dsa = new DSA(id);
+    dsa.owners = [];
   }
   return dsa;
 }

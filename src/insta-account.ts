@@ -12,7 +12,7 @@ import {
   LogDisable,
   LogEnable,
 } from "../generated/templates/InstaAccountModified/InstaAccountModified";
-import { Dsa } from "../generated/schema";
+import { DSA, User } from "../generated/schema";
 import { createOrLoadDsa, createOrLoadUser } from "./insta-index";
 
 export function handleLogEnableUser(event: LogEnableUser): void {
@@ -31,9 +31,12 @@ export function handleLogEnableUser(event: LogEnableUser): void {
   let user = createOrLoadUser(event.params.user.toHexString());
 
   user.address = event.params.user;
-  user.count = user.count.plus(BigInt.fromI32(1));
-  dsa.owner = user.id;
-  dsa.isAuth = true;
+  let owners = dsa.owners;
+  let index = owners.indexOf(user.id);
+  if (index == -1) {
+    owners.push(user.id);
+  }
+  dsa.owners = owners;
 
   dsa.save();
   user.save();
@@ -51,20 +54,26 @@ export function handleLogDisableUser(event: LogDisableUser): void {
   ]);
   log.info("ID: {}", [id]);
 
-  let dsa = Dsa.load(id);
+  let dsa = DSA.load(id);
   if (dsa == null) {
     log.info("DSA-doesn't-exist: ", [id]);
     return;
   }
-  let user = createOrLoadUser(event.params.user.toHexString());
-
+  let user = User.load(event.params.user.toHexString());
+  if (user == null) {
+    log.info("not-owner: {}", [event.params.user.toHexString()]);
+    return;
+  }
   user.address = event.params.user;
-  user.count = user.count.minus(BigInt.fromI32(1));
-  dsa.owner = user.id;
-  dsa.isAuth = false;
+  let owners = dsa.owners;
+  let removeIndex = owners.indexOf(user.id, 0);
+  if (removeIndex != -1) {
+    owners.splice(removeIndex, 1);
+  }
+  dsa.owners = owners;
 
-  user.save();
   dsa.save();
+  user.save();
 }
 
 export function handleEnableUser(event: LogEnable): void {
@@ -83,12 +92,15 @@ export function handleEnableUser(event: LogEnable): void {
   let user = createOrLoadUser(event.params.user.toHexString());
 
   user.address = event.params.user;
-  user.count = user.count.plus(BigInt.fromI32(1));
-  dsa.owner = user.id;
-  dsa.isAuth = true;
+  let owners = dsa.owners;
+  let index = owners.indexOf(user.id);
+  if (index == -1) {
+    owners.push(user.id);
+  }
+  dsa.owners = owners;
 
-  user.save();
   dsa.save();
+  user.save();
 }
 
 export function handleDisableUser(event: LogDisable): void {
@@ -103,18 +115,24 @@ export function handleDisableUser(event: LogDisable): void {
   ]);
   log.info("ID: {}", [id]);
 
-  let dsa = Dsa.load(id);
+  let dsa = DSA.load(id);
   if (dsa == null) {
     log.info("DSA-doesn't-exist: ", [id]);
     return;
   }
-  let user = createOrLoadUser(event.params.user.toHexString());
-
+  let user = User.load(event.params.user.toHexString());
+  if (user == null) {
+    log.info("not-owner: {}", [event.params.user.toHexString()]);
+    return;
+  }
   user.address = event.params.user;
-  user.count = user.count.minus(BigInt.fromI32(1));
-  dsa.owner = user.id;
-  dsa.isAuth = false;
+  let owners = dsa.owners;
+  let removeIndex = owners.indexOf(user.id, 0);
+  if (removeIndex != -1) {
+    owners.splice(removeIndex, 1);
+  }
+  dsa.owners = owners;
 
-  user.save();
   dsa.save();
+  user.save();
 }
