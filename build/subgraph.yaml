@@ -15,7 +15,7 @@ dataSources:
       language: wasm/assemblyscript
       entities:
         - User
-        - Dsa
+        - DSA
       abis:
         - name: InstaIndex
           file: InstaIndex/abis/InstaIndex.json
@@ -39,7 +39,7 @@ templates:
       language: wasm/assemblyscript
       entities:
         - User
-        - Dsa
+        - DSA
       abis:
         - name: InstaAccountModified
           file: InstaAccountModified/abis/InstaAccountModified.json
