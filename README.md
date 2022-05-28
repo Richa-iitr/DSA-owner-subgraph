@@ -1,7 +1,7 @@
 # DSA Subgraph 
 ### User Owned DSAs
 
-Query the subgraph (Mainet deployment): <!--https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground--><br>
+Query the subgraph (Mainnet deployment): <!--https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground--><br>
 Pending Version: https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?version=pending
 
 Queries can be made for: 
