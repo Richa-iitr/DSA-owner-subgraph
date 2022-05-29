@@ -58,8 +58,8 @@ Queries can be made for:
 
 _Result from InstaList contract:_
 
-![Screenshot from 2022-05-29 12-50-51](https://user-images.githubusercontent.com/76250660/170856990-046ff653-89b5-4c55-8944-0ef8c9bb3b31.png)
-![Screenshot from 2022-05-29 12-52-06](https://user-images.githubusercontent.com/76250660/170857039-4f7fdb1d-149e-4357-81f4-83747c4deef0.png)
+![Screenshot from 2022-05-29 12-50-51](https://user-images.githubusercontent.com/76250660/170857135-7b34c680-e799-4ce0-a395-cb49c75f6d9a.png)
+![Screenshot from 2022-05-29 12-52-06](https://user-images.githubusercontent.com/76250660/170857138-b4f55ee7-b14e-417d-9bf2-2eaf9724eca7.png)
 
 
 
