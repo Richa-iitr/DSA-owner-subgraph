@@ -1,8 +1,8 @@
 # DSA Subgraph 
 ### User Owned DSAs
 
-Query the subgraph (Mainnet deployment): <!--https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground--><br>
-Pending Version: https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?version=pending
+Query the subgraph (Mainnet deployment): https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?selected=playground<br> 
+<!-- Pending Version: https://thegraph.com/hosted-service/subgraph/richa-iitr/dsamainnet?version=pending -->
 
 Queries can be made for: 
 
@@ -26,43 +26,40 @@ Queries can be made for:
 
 **Query Results**:
 
-<!-- <pre>{ 
-  {
+<pre>  {
   users(where: {address: "0x1d29756e8f7b091ce6c11a35980de79c7eda5d1f"}) {
     id
     address
-    count
-    dsasOwned {
+    DSAs {
       id
-      version
       accountID
-      address
+      version
       creator
-      isAuth
+      owners {
+        id
+      }
     }
   }
-}</pre> -->
-<!--
+  dsas(where: {accountID: 18}) {
+    id
+    version
+    accountID
+    address
+    owners {
+      id
+    }
+  }
+}
+</pre>
+
+![Screenshot from 2022-05-29 12-47-03](https://user-images.githubusercontent.com/76250660/170856927-afd3b419-ad6d-496f-aa1f-7b22c370e1e6.png)
+![Screenshot from 2022-05-29 12-47-18](https://user-images.githubusercontent.com/76250660/170856931-6f2076dd-91ad-4efc-8b1a-3fb08c287d2c.png)
+
 
 _Result from InstaList contract:_
 
-![Screenshot from 2022-05-27 21-47-20](https://user-images.githubusercontent.com/76250660/170738775-ab092983-c6e7-442d-9398-519f1127fcc3.png)
+![Screenshot from 2022-05-29 12-50-51](https://user-images.githubusercontent.com/76250660/170856990-046ff653-89b5-4c55-8944-0ef8c9bb3b31.png)
+![Screenshot from 2022-05-29 12-52-06](https://user-images.githubusercontent.com/76250660/170857039-4f7fdb1d-149e-4357-81f4-83747c4deef0.png)
 
-<pre>{ 
-  {
-  users(where: {count_gte: 2}) {
-    id
-    address
-    count
-    dsasOwned(where: {isAuth: true}) {
-      id
-      version
-      accountID
-      address
-      creator
-      isAuth
-    }
-  }
-}</pre>
 
- -->
+
